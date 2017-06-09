@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_height">90dp</dimen>
+    <dimen name="toolbar_title_size">20sp</dimen>
+    <dimen name="toolbar_subtitle_size">16sp</dimen>
+
+    <dimen name="tab_divider_height">4dp</dimen>
+
+    <dimen name="news_headline_text">20sp</dimen>
+    <dimen name="news_date_text">13sp</dimen>
+    <dimen name="news_section_text">13sp</dimen>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="colorTransparent">#00000000</color>
+
+    <color name="white">#FAFAFA</color>
+    <color name="grey">#9E9E9E</color>
+
+    <color name="color_google">#F44336</color>
+    <color name="color_apple">#607D8B</color>
+    <color name="color_microsoft">#43A047</color>
+    <color name="color_facebook">#3F51B5</color>
+    <color name="color_oracle">#EF6C00</color>
+</resources>
