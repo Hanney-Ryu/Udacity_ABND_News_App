@@ -17,8 +17,7 @@
             android:background="@color/grey"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Powered by The Guardian"
+            android:text="@string/powered_by_the_guardian"
             android:textColor="@color/white" />
-
     </LinearLayout>
 </layout>

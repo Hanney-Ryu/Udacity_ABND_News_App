@@ -20,17 +20,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbarMain.toolbar);
-
         context = binding.getRoot().getContext();
-
         categoryAdapter = new CategoryAdapter(getSupportFragmentManager());
-        binding.viewpager.addOnPageChangeListener(new PageChangeListener());
         binding.viewpager.setAdapter(categoryAdapter);
+        binding.viewpager.addOnPageChangeListener(new PageChangeListener());
         binding.tabs.setupWithViewPager(binding.viewpager);
-        setTabStyle();
-
+        decorateTabStyle();
         binding.toolbarMain.toolbarSubtitle.setText(QueryUtils.getSubtitle());
     }
 
@@ -52,33 +50,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setTabStyle() {
+    /**
+     * Paints the tabs of the viewpager and inserts icons
+     */
+    private void decorateTabStyle() {
         ImageView tab1 = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tab1.setBackgroundColor(ContextCompat.getColor(context, R.color.color_google));
         tab1.setImageResource(R.drawable.google);
-        binding.tabs.getTabAt(0).setCustomView(tab1);
+        binding.tabs.getTabAt(CategoryAdapter.CATEGORY_GOOGLE_INDEX).setCustomView(tab1);
 
         ImageView tab2 = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tab2.setBackgroundColor(ContextCompat.getColor(context, R.color.color_apple));
         tab2.setImageResource(R.drawable.apple);
-        binding.tabs.getTabAt(1).setCustomView(tab2);
+        binding.tabs.getTabAt(CategoryAdapter.CATEGORY_APPLE_INDEX).setCustomView(tab2);
 
         ImageView tab3 = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tab3.setBackgroundColor(ContextCompat.getColor(context, R.color.color_microsoft));
         tab3.setImageResource(R.drawable.microsoft);
-        binding.tabs.getTabAt(2).setCustomView(tab3);
+        binding.tabs.getTabAt(CategoryAdapter.CATEGORY_MICROSOFT_INDEX).setCustomView(tab3);
 
         ImageView tab4 = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tab4.setBackgroundColor(ContextCompat.getColor(context, R.color.color_facebook));
         tab4.setImageResource(R.drawable.facebook);
-        binding.tabs.getTabAt(3).setCustomView(tab4);
+        binding.tabs.getTabAt(CategoryAdapter.CATEGORY_FACEBOOK_INDEX).setCustomView(tab4);
 
         ImageView tab5 = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tab5.setBackgroundColor(ContextCompat.getColor(context, R.color.color_oracle));
         tab5.setImageResource(R.drawable.oracle);
-        binding.tabs.getTabAt(4).setCustomView(tab5);
+        binding.tabs.getTabAt(CategoryAdapter.CATEGORY_ORACLE_INDEX).setCustomView(tab5);
     }
 
+    /**
+     * When the tab is changed, change the color of the bar under the tab
+     * @param context
+     * @param position of the tab
+     */
     private void changeColorOfTabDivider(Context context, int position) {
         ImageView tabDivider = binding.tabDivider;
         switch (position) {

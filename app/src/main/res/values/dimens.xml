@@ -9,4 +9,6 @@
     <dimen name="news_headline_text">20sp</dimen>
     <dimen name="news_date_text">13sp</dimen>
     <dimen name="news_section_text">13sp</dimen>
+    <dimen name="state_text_width">200dp</dimen>
+    <dimen name="state_text_height">200dp</dimen>
 </resources>

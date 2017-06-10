@@ -16,15 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.example.android.itwasnews.databinding.NewsListBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NewsFeedFragment extends Fragment implements LoaderManager.LoaderCallbacks<List<News>> {
     private static final String LOG_TAG = NewsFeedFragment.class.getSimpleName();
 
@@ -33,7 +29,7 @@ public class NewsFeedFragment extends Fragment implements LoaderManager.LoaderCa
     private int position;
     private NewsAdapter newsAdapter;
     private Loader<List<News>> newsLoader;
-    private static final String GUARDION_REQUEST_URL = "https://content.guardianapis.com/search?section=technology";
+    private static final String GUARDIAN_REQUEST_URL = "https://content.guardianapis.com/search?section=technology";
     private static final String API_KEY = "test";
 
     public static Fragment newInstance(int position) {
@@ -50,8 +46,7 @@ public class NewsFeedFragment extends Fragment implements LoaderManager.LoaderCa
         newsAdapter = new NewsAdapter(getContext(), new ArrayList<News>());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setAdapter(newsAdapter);
-
-        if(isConnected()){
+        if (isConnected()) {
             getActivity().getSupportLoaderManager().initLoader(position, getArguments(), this);
         } else {
             binding.loadingIndicator.setVisibility(View.GONE);
@@ -62,14 +57,13 @@ public class NewsFeedFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
-        Uri baseUri = Uri.parse(GUARDION_REQUEST_URL);
+        Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-        uriBuilder.appendQueryParameter("from-date",QueryUtils.getFromDate());
-        uriBuilder.appendQueryParameter("to-date",QueryUtils.getToDate());
-        uriBuilder.appendQueryParameter("order-by","relevance");
-        uriBuilder.appendQueryParameter("q",CategoryAdapter.categories[position]);
+        uriBuilder.appendQueryParameter("from-date", QueryUtils.getFromDate());
+        uriBuilder.appendQueryParameter("to-date", QueryUtils.getToDate());
+        uriBuilder.appendQueryParameter("order-by", "relevance");
+        uriBuilder.appendQueryParameter("q", CategoryAdapter.categories[position]);
         uriBuilder.appendQueryParameter("api-key", API_KEY);
-        Log.i(LOG_TAG, "query : " + uriBuilder.toString());
         newsLoader = new NewsLoader(getContext(), uriBuilder.toString());
         return newsLoader;
     }
@@ -77,7 +71,7 @@ public class NewsFeedFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> newsFeed) {
         binding.loadingIndicator.setVisibility(View.GONE);
-        if(newsFeed.isEmpty() || newsFeed.size() == 0 ){
+        if (newsFeed == null || newsFeed.size() == 0) {
             binding.recyclerView.setVisibility(View.GONE);
             binding.emptyNewsStateTextView.setVisibility(View.VISIBLE);
         } else {
@@ -87,19 +81,16 @@ public class NewsFeedFragment extends Fragment implements LoaderManager.LoaderCa
         newsAdapter.swapNewsFeed(newsFeed);
     }
 
-
-
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
         newsAdapter.swapNewsFeed(null);
     }
 
-    // Check whether the network is connected or not.
-    public boolean isConnected(){
+    public boolean isConnected() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        return networkInfo != null  && networkInfo.isConnected();
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

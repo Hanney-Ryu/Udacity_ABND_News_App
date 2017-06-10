@@ -21,7 +21,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This class covers the following:
+ * - Parsing JSON data from the guardian API
+ * - Methods related to date calculation and date format
+ */
 public class QueryUtils {
+    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
     private static final int CONN_READ_TIME = 10000;
     private static final int CONN_CONNECT_TIME = 15000;
     private static final String JSON_OBJECT_RESPONSE = "response";
@@ -30,10 +37,10 @@ public class QueryUtils {
     private static final String JSON_KEY_SECTION_NAME = "sectionName";
     private static final String JSON_KEY_WEB_URL = "webUrl";
     private static final String JSON_KEY_WEB_PUBLICATION_DATE = "webPublicationDate";
-    private static final int DATE_LENGTH = 10;
+    private static final int REQUIRED_DATE_LENGTH = 10;
 
-
-    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    private static final int SUBSTRACT_YEAR = -10;
+    private static final int SUBSTARCT_DAY = -7;
 
     private QueryUtils() {
     }
@@ -60,14 +67,11 @@ public class QueryUtils {
 
     private static String makeHttpRequest(URL url) {
         String jsonResponse = "";
-
         if (url == null) {
             return jsonResponse;
         }
-
         HttpURLConnection httpURLConnection = null;
         InputStream inputStream = null;
-
 
         try {
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -75,7 +79,6 @@ public class QueryUtils {
             httpURLConnection.setConnectTimeout(CONN_CONNECT_TIME);
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.connect();
-
             if (httpURLConnection.getResponseCode() == 200) {
                 inputStream = httpURLConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
@@ -133,8 +136,8 @@ public class QueryUtils {
                         section = result.getString(JSON_KEY_SECTION_NAME);
                         title = result.getString(JSON_KEY_WEB_TITLE);
                         date = result.getString(JSON_KEY_WEB_PUBLICATION_DATE);
-                        if (date.length() > DATE_LENGTH) {
-                            date = date.substring(0, DATE_LENGTH);
+                        if (date.length() > REQUIRED_DATE_LENGTH) {
+                            date = date.substring(0, REQUIRED_DATE_LENGTH);
                         }
                         url = result.getString(JSON_KEY_WEB_URL);
                         newsFeed.add(new News(section, title, date, url));
@@ -150,20 +153,36 @@ public class QueryUtils {
         return newsFeed;
     }
 
+
+    /**
+     * get the fromDate for query
+     * @return formatted fromDate for a query
+     */
+    public static String getFromDate() {
+        return formatDateForQuery(addYearAndDays(new Date(), SUBSTRACT_YEAR, SUBSTARCT_DAY));
+    }
+
+    /**
+     * get the ToDate for query*
+     * @return foramtted toDate for a query
+     */
+    public static String getToDate() {
+        return formatDateForQuery(addYearAndDays(new Date(), SUBSTRACT_YEAR, 0));
+    }
+    /**
+     * get the subtitle string
+     * @return subtitle string
+     */
     public static String getSubtitle() {
         String fromDate = formatDateForSubtitle(addYearAndDays(new Date(), -10, -7));
         String toDate = formatDateForSubtitle(addYearAndDays(new Date(), -10, 0));
         return fromDate + "~" + toDate;
     }
 
-    public static String getFromDate() {
-        return formatDateForQuery(addYearAndDays(new Date(), -10, -7));
-    }
-
-    public static String getToDate() {
-        return formatDateForQuery(addYearAndDays(new Date(), -10, 0));
-    }
-
+    /**
+     * Calculate the date plus or minus the year and day
+     * @return Date
+     */
     private static Date addYearAndDays(Date date, int year, int days) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, year);
@@ -171,11 +190,19 @@ public class QueryUtils {
         return calendar.getTime();
     }
 
+    /**
+     * Format date for query
+     * @return formatted date for subtitle
+     */
     private static String formatDateForQuery(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(date);
     }
 
+    /**
+     * Format date for subtitle
+     * @return formatted ate for subtitle
+     */
     private static String formatDateForSubtitle(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy");
         return sdf.format(date);

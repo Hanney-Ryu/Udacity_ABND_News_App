@@ -23,29 +23,26 @@
 
         <TextView
             android:id="@+id/empty_news_state_text_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/state_text_width"
+            android:layout_height="@dimen/state_text_height"
             android:layout_centerInParent="true"
             android:background="@drawable/notification_circle"
             android:gravity="center"
-            android:text="Nothing happened"
+            android:text="@string/nothing_happened"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/no_network_state_text_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/state_text_width"
+            android:layout_height="@dimen/state_text_height"
             android:layout_centerInParent="true"
             android:background="@drawable/notification_circle"
             android:gravity="center"
-            android:text="Not Connected"
+            android:text="@string/not_connected"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:visibility="gone" />
-
     </RelativeLayout>
-
-
 </layout>

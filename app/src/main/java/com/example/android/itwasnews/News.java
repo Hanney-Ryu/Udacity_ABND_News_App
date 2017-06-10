@@ -1,7 +1,7 @@
 package com.example.android.itwasnews;
 
 /**
- * News class contains information of the news
+ * This class contains information about the news
  */
 public class News {
     private String section;

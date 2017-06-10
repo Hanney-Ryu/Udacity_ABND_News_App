@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">IT was news</string>
+    <string name="app_short_name">ITwasnews</string>
+    <string name="powered_by_the_guardian">Powered by The Guardian</string>
+    <string name="not_connected">Not Connected</string>
+    <string name="nothing_happened">Nothing happened</string>
 </resources>
